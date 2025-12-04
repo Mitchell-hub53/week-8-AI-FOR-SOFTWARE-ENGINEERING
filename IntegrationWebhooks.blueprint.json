@@ -1,0 +1,603 @@
+{
+    "name": "Integration Webhooks",
+    "flow": [
+        {
+            "id": 1,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2176368,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "label": "My gateway-webhook webhook",
+                            "data": {
+                                "editable": "true"
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": null,
+                            "module": "placeholder:Placeholder",
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": -300
+                                }
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 3,
+                            "module": "builtin:BasicRouter",
+                            "version": 1,
+                            "parameters": {
+                                "else": 3
+                            },
+                            "mapper": null,
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 0,
+                                    "name": "High Severity - Shutdown Required"
+                                }
+                            },
+                            "routes": [
+                                {
+                                    "flow": [
+                                        {
+                                            "id": null,
+                                            "module": "placeholder:Placeholder",
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 900,
+                                                    "y": -450
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "flow": [
+                                        {
+                                            "id": null,
+                                            "module": "placeholder:Placeholder",
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 900,
+                                                    "y": -150
+                                                }
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    "flow": [
+                                        {
+                                            "id": 4,
+                                            "module": "http:MakeRequest",
+                                            "version": 4,
+                                            "parameters": {
+                                                "authenticationType": "noAuth",
+                                                "tlsType": "",
+                                                "proxyKeychain": ""
+                                            },
+                                            "mapper": {
+                                                "url": "https://jsonplaceholder.typicode.com/posts/1",
+                                                "method": "get",
+                                                "parseResponse": true,
+                                                "stopOnHttpError": true,
+                                                "allowRedirects": true,
+                                                "shareCookies": false,
+                                                "requestCompressedContent": true
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 900,
+                                                    "y": 150
+                                                },
+                                                "restore": {
+                                                    "parameters": {
+                                                        "authenticationType": {
+                                                            "label": "No authenticationUse when no credentials are required for the request."
+                                                        },
+                                                        "tlsType": {
+                                                            "label": "Empty"
+                                                        },
+                                                        "proxyKeychain": {
+                                                            "label": "Choose a key"
+                                                        }
+                                                    },
+                                                    "expect": {
+                                                        "method": {
+                                                            "mode": "chose",
+                                                            "label": "GET"
+                                                        },
+                                                        "headers": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "queryParameters": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "contentType": {
+                                                            "label": "Empty"
+                                                        },
+                                                        "parseResponse": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "stopOnHttpError": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "allowRedirects": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "shareCookies": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "requestCompressedContent": {
+                                                            "mode": "chose"
+                                                        },
+                                                        "paginationType": {
+                                                            "label": "Empty"
+                                                        }
+                                                    }
+                                                },
+                                                "parameters": [
+                                                    {
+                                                        "name": "authenticationType",
+                                                        "type": "select",
+                                                        "label": "Authentication type",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "noAuth",
+                                                                "apiKey",
+                                                                "basicAuth",
+                                                                "oAuth"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "tlsType",
+                                                        "type": "select",
+                                                        "label": "Transport layer security (TLS)",
+                                                        "validate": {
+                                                            "enum": [
+                                                                "mTls",
+                                                                "tls"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "proxyKeychain",
+                                                        "type": "keychain:proxy",
+                                                        "label": "Proxy"
+                                                    }
+                                                ],
+                                                "expect": [
+                                                    {
+                                                        "name": "url",
+                                                        "type": "url",
+                                                        "label": "URL",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "method",
+                                                        "type": "select",
+                                                        "label": "Method",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "get",
+                                                                "head",
+                                                                "post",
+                                                                "put",
+                                                                "patch",
+                                                                "delete",
+                                                                "options"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "headers",
+                                                        "type": "array",
+                                                        "label": "Headers",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "label": "Header",
+                                                            "type": "collection",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "name",
+                                                                    "label": "Name",
+                                                                    "type": "text",
+                                                                    "required": true,
+                                                                    "validate": {
+                                                                        "pattern": "^[-!#$%&'*+.^_`|~0-9A-Za-z]+$"
+                                                                    }
+                                                                },
+                                                                {
+                                                                    "name": "value",
+                                                                    "label": "Value",
+                                                                    "type": "text"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "queryParameters",
+                                                        "type": "array",
+                                                        "label": "Query parameters",
+                                                        "spec": {
+                                                            "name": "value",
+                                                            "label": "Parameter",
+                                                            "type": "collection",
+                                                            "spec": [
+                                                                {
+                                                                    "name": "name",
+                                                                    "label": "Name",
+                                                                    "type": "text",
+                                                                    "required": true
+                                                                },
+                                                                {
+                                                                    "name": "value",
+                                                                    "label": "Value",
+                                                                    "type": "text"
+                                                                }
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "contentType",
+                                                        "type": "select",
+                                                        "label": "Body content type",
+                                                        "validate": {
+                                                            "enum": [
+                                                                "json",
+                                                                "multipart",
+                                                                "urlEncoded",
+                                                                "custom"
+                                                            ]
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "parseResponse",
+                                                        "type": "boolean",
+                                                        "label": "Parse response",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "stopOnHttpError",
+                                                        "type": "boolean",
+                                                        "label": "Return error if HTTP request fails",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "timeout",
+                                                        "type": "uinteger",
+                                                        "label": "Timeout",
+                                                        "validate": {
+                                                            "min": 1,
+                                                            "max": 300
+                                                        }
+                                                    },
+                                                    {
+                                                        "name": "allowRedirects",
+                                                        "type": "boolean",
+                                                        "label": "Allow redirects",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "shareCookies",
+                                                        "type": "boolean",
+                                                        "label": "Share cookies with other HTTP modules",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "requestCompressedContent",
+                                                        "type": "boolean",
+                                                        "label": "Request compressed content",
+                                                        "required": true
+                                                    },
+                                                    {
+                                                        "name": "paginationType",
+                                                        "type": "select",
+                                                        "label": "Pagination type",
+                                                        "validate": {
+                                                            "enum": [
+                                                                "offsetBased",
+                                                                "pageBased",
+                                                                "urlBased",
+                                                                "tokenBased"
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "interface": [
+                                                    {
+                                                        "name": "data",
+                                                        "label": "Data",
+                                                        "type": "any"
+                                                    },
+                                                    {
+                                                        "name": "statusCode",
+                                                        "label": "Status Code",
+                                                        "type": "number"
+                                                    },
+                                                    {
+                                                        "name": "headers",
+                                                        "label": "Headers",
+                                                        "type": "collection",
+                                                        "spec": [
+                                                            {
+                                                                "name": "content-length",
+                                                                "label": "Content-Length",
+                                                                "type": "text"
+                                                            },
+                                                            {
+                                                                "name": "content-encoding",
+                                                                "label": "Content-Encoding",
+                                                                "type": "text"
+                                                            },
+                                                            {
+                                                                "name": "content-type",
+                                                                "label": "Content-Type",
+                                                                "type": "text"
+                                                            },
+                                                            {
+                                                                "name": "server",
+                                                                "label": "Server",
+                                                                "type": "text"
+                                                            },
+                                                            {
+                                                                "name": "cache-control",
+                                                                "label": "Cache-Control",
+                                                                "type": "text"
+                                                            },
+                                                            {
+                                                                "name": "set-cookie",
+                                                                "label": "Set-Cookie",
+                                                                "type": "array",
+                                                                "spec": {
+                                                                    "type": "text"
+                                                                }
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": 5,
+                                            "module": "util:SetVariables",
+                                            "version": 1,
+                                            "parameters": {},
+                                            "mapper": {
+                                                "variables": [
+                                                    {
+                                                        "name": "    machine_status: down_for_maintenance\n\n    estimated_downtime: 4 (hours)\n\n    affected_order: ORD-1001",
+                                                        "value": ""
+                                                    }
+                                                ],
+                                                "scope": "roundtrip"
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 1200,
+                                                    "y": 150
+                                                },
+                                                "restore": {
+                                                    "expect": {
+                                                        "variables": {
+                                                            "items": [
+                                                                null
+                                                            ]
+                                                        },
+                                                        "scope": {
+                                                            "label": "One cycle"
+                                                        }
+                                                    }
+                                                },
+                                                "expect": [
+                                                    {
+                                                        "name": "variables",
+                                                        "type": "array",
+                                                        "label": "Variables",
+                                                        "spec": [
+                                                            {
+                                                                "name": "name",
+                                                                "label": "Variable name",
+                                                                "type": "text",
+                                                                "required": true
+                                                            },
+                                                            {
+                                                                "name": "value",
+                                                                "label": "Variable value",
+                                                                "type": "any"
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "name": "scope",
+                                                        "type": "select",
+                                                        "label": "Variable lifetime",
+                                                        "required": true,
+                                                        "validate": {
+                                                            "enum": [
+                                                                "roundtrip",
+                                                                "execution"
+                                                            ]
+                                                        }
+                                                    }
+                                                ],
+                                                "interface": [
+                                                    {
+                                                        "name": "    machine_status: down_for_maintenance\n\n    estimated_downtime: 4 (hours)\n\n    affected_order: ORD-1001",
+                                                        "label": "    machine_status: down_for_maintenance\n\n    estimated_downtime: 4 (hours)\n\n    affected_order: ORD-1001",
+                                                        "type": "any"
+                                                    }
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            "id": 7,
+                                            "module": "builtin:BasicRouter",
+                                            "version": 1,
+                                            "mapper": null,
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 1500,
+                                                    "y": 150
+                                                }
+                                            },
+                                            "routes": [
+                                                {
+                                                    "flow": [
+                                                        {
+                                                            "id": 6,
+                                                            "module": "email:ActionSendEmail",
+                                                            "version": 7,
+                                                            "metadata": {
+                                                                "designer": {
+                                                                    "x": 1800,
+                                                                    "y": 0,
+                                                                    "messages": [
+                                                                        {
+                                                                            "category": "setup",
+                                                                            "severity": "error",
+                                                                            "message": "Value must not be empty."
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "flow": [
+                                                        {
+                                                            "id": 8,
+                                                            "module": "google-sheets:addRow",
+                                                            "version": 2,
+                                                            "metadata": {
+                                                                "designer": {
+                                                                    "x": 1800,
+                                                                    "y": 300,
+                                                                    "messages": [
+                                                                        {
+                                                                            "category": "setup",
+                                                                            "severity": "error",
+                                                                            "message": "Value must not be empty."
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            }
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "flow": [
+                                        {
+                                            "id": null,
+                                            "module": "placeholder:Placeholder",
+                                            "filter": {
+                                                "name": "severity equals low",
+                                                "conditions": []
+                                            },
+                                            "metadata": {
+                                                "designer": {
+                                                    "x": 900,
+                                                    "y": 450
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": null,
+                            "module": "placeholder:Placeholder",
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 300
+                                }
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}
